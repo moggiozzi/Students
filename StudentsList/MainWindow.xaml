@@ -3,6 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Students group" Height="350" Width="525">
     <DockPanel>
+        <Label DockPanel.Dock="Top">Список студентов:</Label>
         <DataGrid Name="dataGrid" AutoGenerateColumns="True" DockPanel.Dock="Top" />
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" >
+            <Button x:Name="addButton" VerticalAlignment="Bottom" Click="addButton_Click" >Add student</Button>
+        </StackPanel>
     </DockPanel>
 </Window>

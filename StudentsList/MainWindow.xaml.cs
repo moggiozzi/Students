@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace StudentsList
   /// </summary>
   public partial class MainWindow : Window
   {
-    List<Student> StudentList;
+    ObservableCollection<Student> StudentList;
     
     public MainWindow()
     {
@@ -31,10 +32,15 @@ namespace StudentsList
 
     void fillStudentList()
     {
-      StudentList = new List<Student>();
+      StudentList = new ObservableCollection<Student>();
       StudentList.Add(new Student("Иван"));
       StudentList.Add(new Student("Света", Student.eGender.FEMALE));
       StudentList.Add(new Student("Кондориано", Student.eGender.MALE, 25));
+    }
+
+    private void addButton_Click(object sender, RoutedEventArgs e)
+    {
+      StudentList.Add(new Student());
     }
   }
 }
