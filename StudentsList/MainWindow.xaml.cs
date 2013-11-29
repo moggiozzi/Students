@@ -20,9 +20,21 @@ namespace StudentsList
   /// </summary>
   public partial class MainWindow : Window
   {
+    List<Student> StudentList;
+    
     public MainWindow()
     {
       InitializeComponent();
+      fillStudentList();
+      dataGrid.ItemsSource = StudentList;
+    }
+
+    void fillStudentList()
+    {
+      StudentList = new List<Student>();
+      StudentList.Add(new Student("Иван"));
+      StudentList.Add(new Student("Света", Student.eGender.FEMALE));
+      StudentList.Add(new Student("Кондориано", Student.eGender.MALE, 25));
     }
   }
 }
