@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -92,6 +94,26 @@ namespace StudentsList
         rootNode.AppendChild(studentNode);
       }
       doc.Save(fileName);
+    }
+
+    private void serializeButton_Click(object sender, RoutedEventArgs e)
+    {
+      Stream stream = File.Open("students.bin", FileMode.Create);
+      BinaryFormatter bformatter = new BinaryFormatter();
+      bformatter.Serialize(stream,StudentList);
+      stream.Close();
+    }
+
+    private void deserializeButton_Click(object sender, RoutedEventArgs e)
+    {
+      if ( File.Exists("students.bin") )
+      {
+        Stream stream = File.Open("students.bin", FileMode.Open);
+        BinaryFormatter bformatter = new BinaryFormatter();
+        StudentList = (ObservableCollection<Student>)bformatter.Deserialize(stream);
+        stream.Close();
+        dataGrid.ItemsSource = StudentList;
+      }
     }
   }
 }

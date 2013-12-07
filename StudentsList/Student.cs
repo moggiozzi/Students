@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentsList
 {
+  [Serializable]
   class Student
   {
     public enum eGender { MALE, FEMALE };
