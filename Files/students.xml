@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- список студентов -->
+<students>
+	<student name="Иван" age="18" gender="male" />
+	<student name="Сергей" age="18" gender="male" />
+	<student name="Руслан" age="18" gender="male" />
+	<student name="Таня" age="18" gender="female" />
+</students>

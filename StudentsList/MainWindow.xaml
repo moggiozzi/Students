@@ -7,6 +7,8 @@
         <DataGrid Name="dataGrid" AutoGenerateColumns="True" DockPanel.Dock="Top" />
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" >
             <Button x:Name="addButton" VerticalAlignment="Bottom" Click="addButton_Click" >Add student</Button>
+            <Button x:Name="loadFromXmlButton" VerticalAlignment="Bottom" Click="loadFromXmlButton_Click" >Load from XML</Button>
+            <Button x:Name="saveToXmlButton" VerticalAlignment="Bottom" Click="saveToXmlButton_Click" >Save to XML</Button>
         </StackPanel>
     </DockPanel>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace StudentsList
 {
@@ -26,21 +28,70 @@ namespace StudentsList
     public MainWindow()
     {
       InitializeComponent();
-      fillStudentList();
-      dataGrid.ItemsSource = StudentList;
-    }
-
-    void fillStudentList()
-    {
       StudentList = new ObservableCollection<Student>();
-      StudentList.Add(new Student("Иван"));
-      StudentList.Add(new Student("Света", Student.eGender.FEMALE));
-      StudentList.Add(new Student("Кондориано", Student.eGender.MALE, 25));
+      dataGrid.ItemsSource = StudentList;
     }
 
     private void addButton_Click(object sender, RoutedEventArgs e)
     {
       StudentList.Add(new Student());
+    }
+
+    private void loadFromXmlButton_Click(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog dlg = new OpenFileDialog();
+      dlg.Filter = "(.xml)|*.xml";
+      if ((bool)dlg.ShowDialog())
+        loadFromXml(dlg.FileName);
+    }
+
+    private void loadFromXml(String fileName)
+    {
+      StudentList.Clear();
+      if (System.IO.File.Exists(fileName))
+      {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(fileName);
+        XmlNode rootNode = doc["students"];
+        foreach (XmlNode s in rootNode.ChildNodes)
+        {
+          string name = s.Attributes["name"].Value;
+          int age = 0;
+          int.TryParse(s.Attributes["age"].Value, out age);
+          Student.eGender gender = Student.eGender.MALE;
+          if (s.Attributes["gender"].Value == "female")
+            gender = Student.eGender.FEMALE;
+          Student st = new Student(name, gender, age);
+          StudentList.Add(st);
+        }
+      }
+    }
+
+    private void saveToXmlButton_Click(object sender, RoutedEventArgs e)
+    {
+      SaveFileDialog dlg = new SaveFileDialog();
+      dlg.Filter = "(.xml)|*.xml";
+      if ((bool)dlg.ShowDialog())
+        saveToXml(dlg.FileName);
+    }
+
+    private void saveToXml(String fileName)
+    {
+      XmlDocument doc = new XmlDocument();
+      doc.InnerXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><students></students>";
+      XmlElement rootNode = doc["students"];
+      foreach (var s in StudentList)
+      {
+        XmlElement studentNode = doc.CreateElement("student");
+        studentNode.SetAttribute("name", s.Name);
+        studentNode.SetAttribute("age", s.Age.ToString());
+        if (s.Gender == Student.eGender.MALE)
+          studentNode.SetAttribute("gender", "male");
+        else
+          studentNode.SetAttribute("gender", "female");
+        rootNode.AppendChild(studentNode);
+      }
+      doc.Save(fileName);
     }
   }
 }
